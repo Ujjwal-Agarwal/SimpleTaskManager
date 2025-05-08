@@ -33,6 +33,10 @@ public class Task {
     @Column(name = "status", nullable = false)
     private TaskStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY) // LAZY - task lsit won't be loaded until it's needed
+    @JoinColumn(name = "task_list_id") // Foreign key column
+    private TaskList taskList;
+
     @Column(name="priority",nullable = false)
     private TaskPriority priority;
 
