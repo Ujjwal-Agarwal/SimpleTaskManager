@@ -5,6 +5,7 @@ import com.ujjwal.tasks.repositories.TaskListRepository;
 import com.ujjwal.tasks.services.TaskListService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,5 +23,24 @@ public class TaskListServiceImpl implements TaskListService {
         return taskListRepository.findAll();
         // JpaRepository findAll returns a List
         // CrudRepository findall returns a Iterable
+    }
+
+    @Override
+    public TaskList createTaskList(TaskList taskList) {
+        if(null!=taskList.getId()){
+            throw new IllegalArgumentException("Task List already has an ID");
+        }
+        if(null==taskList.getTitle() || taskList.getTitle().trim().equals("")){
+            throw new IllegalArgumentException("Task List Title is empty");
+        }
+        LocalDateTime now = LocalDateTime.now();
+        return taskListRepository.save(new TaskList(
+                null,
+                taskList.getTitle(),
+                taskList.getDescription(),
+                null,
+                now,
+                now
+        ));
     }
 }

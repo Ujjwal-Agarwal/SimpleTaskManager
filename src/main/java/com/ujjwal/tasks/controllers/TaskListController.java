@@ -4,10 +4,9 @@ import com.ujjwal.tasks.domain.dto.TaskListDto;
 import com.ujjwal.tasks.domain.entities.TaskList;
 import com.ujjwal.tasks.mappers.TaskListMapper;
 import com.ujjwal.tasks.services.TaskListService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController()
@@ -29,5 +28,12 @@ public class TaskListController {
         List<TaskList> result = taskListService.listTaskLists();
 
         return result.stream().map(taskListMapper::toDto).toList();
+    }
+    @PostMapping
+    public TaskListDto createTaskList(@RequestBody TaskListDto taskListDto) {
+        TaskList createdTaskList =  taskListService.createTaskList(
+                taskListMapper.fromDto(taskListDto)
+        );
+        return taskListMapper.toDto(createdTaskList);
     }
 }
