@@ -28,17 +28,17 @@ public class Task {
     private String description;
 
     @Column(name = "due_date")
-    private LocalDateTime dueData;
+    private LocalDateTime dueDate;
 
     @Column(name = "status", nullable = false)
     private TaskStatus status;
 
+    @Column(name="priority",nullable = false)
+    private TaskPriority priority;
+
     @ManyToOne(fetch = FetchType.LAZY) // LAZY - task lsit won't be loaded until it's needed
     @JoinColumn(name = "task_list_id") // Foreign key column
     private TaskList taskList;
-
-    @Column(name="priority",nullable = false)
-    private TaskPriority priority;
 
     @Column(name = "created",nullable = false)
     private LocalDateTime created;
