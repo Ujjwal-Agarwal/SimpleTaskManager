@@ -22,7 +22,7 @@ public class TaskListServiceImpl implements TaskListService {
 
     @Override
     public List<TaskList> listTaskLists() {
-        System.out.println("TaskListServiceImpl listTaskLists");
+//        System.out.println("TaskListServiceImpl listTaskLists");
         return taskListRepository.findAll();
         // JpaRepository findAll returns a List
         // CrudRepository findall returns a Iterable
