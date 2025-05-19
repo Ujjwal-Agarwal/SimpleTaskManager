@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,6 +29,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> listTasks(UUID taskListId) {
         return taskRepository.findByTaskListId(taskListId);
+    }
+
+    @Override
+    public Optional<Task> getTask(UUID taskListId, UUID taskId) {
+        return taskRepository.findByTaskListIdAndId(taskListId, taskId);
     }
 
     @Override
@@ -53,5 +59,28 @@ public class TaskServiceImpl implements TaskService {
                 now,
                 now
         ));
+
+    }
+
+    @Override
+    public Task updateTask(UUID taskListId, UUID taskId, Task task) {
+        if(task.getId() == null) throw new IllegalArgumentException("Task ID cannot be null");
+        if(!Objects.equals(taskId,task.getId())){
+            throw new IllegalArgumentException("Task IDs do not match");
+        }
+        if(task.getPriority() == null) throw new IllegalArgumentException("Task Priority cannot be null");
+        if(task.getStatus() == null) throw new IllegalArgumentException("Task Status cannot be null");
+
+        Task currentTask = taskRepository.findByTaskListIdAndId(taskListId,taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Task List or Task ID"));
+
+        currentTask.setTitle(task.getTitle());
+        currentTask.setDescription(task.getDescription());
+        currentTask.setDueDate(task.getDueDate());
+        currentTask.setPriority(task.getPriority());
+        currentTask.setStatus(task.getStatus());
+        currentTask.setUpdated(LocalDateTime.now());
+
+        return taskRepository.save(currentTask);
     }
 }
