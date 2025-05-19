@@ -7,6 +7,7 @@ import com.ujjwal.tasks.domain.entities.TaskStatus;
 import com.ujjwal.tasks.repositories.TaskListRepository;
 import com.ujjwal.tasks.repositories.TaskRepository;
 import com.ujjwal.tasks.services.TaskService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -82,5 +83,10 @@ public class TaskServiceImpl implements TaskService {
         currentTask.setUpdated(LocalDateTime.now());
 
         return taskRepository.save(currentTask);
+    }
+    @Transactional
+    @Override
+    public void deleteTask(UUID taskListId, UUID taskId) {
+        taskRepository.deleteByTaskListIdAndId(taskListId,taskId);
     }
 }
